@@ -3,8 +3,9 @@ env_id: "LunarLanderContinuous-v3"
 trainer:
   accelerator: "auto"
   devices: 1
-  max_steps: 1000000
-  log_every_n_steps: 100
+  max_steps: 100
+  val_check_interval: 0
+  log_every_n_steps: 0
 
 agent:
   state_dim: 8
@@ -17,12 +18,12 @@ agent:
   target_entropy: -2.0
 
 buffer:
-  max_size: 1000000
+  max_size: 100
 
 train:
-  batch_size: 256
-  seed: 42
-  start_steps: 10000
+  batch_size: 1
+  # seed: 100
+  start_steps: 10
 
 wandb:
   project: "SAC-LunarLander"

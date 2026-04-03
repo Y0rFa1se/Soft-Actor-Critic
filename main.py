@@ -8,7 +8,7 @@ from SAC import Agent, DataModule, ReplayBuffer
 
 @hydra.main(config_path="configs", config_name="config", version_base="1.3")
 def main(cfg: DictConfig):
-    L.seed_everything(cfg.train.seed)
+    L.seed_everything(cfg.train.seed if "seed" in cfg.train else None)
 
     agent = Agent(cfg.agent)
     buffer = ReplayBuffer(
