@@ -1,20 +1,20 @@
-env_id: "InvertedPendulum-v5"
+env_id: "LunarLanderContinuous-v3"
 
 trainer:
   accelerator: "auto"
   devices: 1
   max_steps: 1000000
-  log_every_n_steps: 10
+  log_every_n_steps: 100
 
 agent:
-  state_dim: 4
-  action_dim: 1
-  q_lr: 5e-5
-  policy_lr: 5e-5
-  log_alpha_lr: 5e-5
-  gamma: 0.95
-  tau: 0.01
-  target_entropy: -3.0
+  state_dim: 8
+  action_dim: 2
+  q_lr: 3e-4
+  policy_lr: 3e-4
+  log_alpha_lr: 3e-4
+  gamma: 0.99
+  tau: 0.005
+  target_entropy: -2.0
 
 buffer:
   max_size: 1000000
@@ -22,6 +22,7 @@ buffer:
 train:
   batch_size: 256
   seed: 42
+  start_steps: 10000
 
 wandb:
-  project: "SAC-InvertedPendulum"
+  project: "SAC-LunarLander"

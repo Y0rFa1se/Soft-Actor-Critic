@@ -17,9 +17,7 @@ def main(cfg: DictConfig):
 
     dm = DataModule(cfg.env_id, buffer, cfg.train.batch_size)
 
-    wandb_logger = WandbLogger(
-        project=cfg.wandb.project, log_model="all"
-    )
+    wandb_logger = WandbLogger(project=cfg.wandb.project, log_model="all")
 
     trainer = L.Trainer(
         **cfg.trainer,
