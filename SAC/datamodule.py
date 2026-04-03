@@ -21,7 +21,7 @@ class Dataset(IterableDataset):
 class DataModule(L.LightningDataModule):
     def __init__(self, env_id, buffer, batch_size, warmup_steps=1000):
         super().__init__()
-        self.env = gym.make(env_id, render_mode="human")
+        self.env = gym.make(env_id)
         self.buffer = buffer
         self.batch_size = batch_size
         self.warmup_steps = warmup_steps
