@@ -10,3 +10,4 @@ except ImportError as e:
     ) from e
 
 from .agent import Agent
+from .buffer import ReplayBuffer
