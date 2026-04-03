@@ -1,7 +1,8 @@
-from ._network import TwinQNetwork, PolicyNetwork
+import pathlib
 
 import torch
-import pathlib
+
+from ._network import PolicyNetwork, TwinQNetwork
 
 
 class Agent:
@@ -76,7 +77,7 @@ class Agent:
         self.q_optimizer.load_state_dict(checkpoint["q_optimizer"])
         self.policy_optimizer.load_state_dict(checkpoint["policy_optimizer"])
         self.alpha_optimizer.load_state_dict(checkpoint["alpha_optimizer"])
-        
+
     def play(self, state):
         pass
 

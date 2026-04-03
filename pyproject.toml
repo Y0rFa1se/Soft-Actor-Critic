@@ -8,3 +8,20 @@ dependencies = [
     "numpy>=2.4.4",
     "torch>=2.11.0",
 ]
+
+[dependency-groups]
+dev = [
+    "black>=26.3.1",
+    "ruff>=0.15.9",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']

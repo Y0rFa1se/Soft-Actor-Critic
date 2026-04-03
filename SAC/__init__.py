@@ -1,13 +1,7 @@
-try:
-    import torch
-
-except ImportError as e:
-    raise ImportError(
-        "\n\n"
-        "===============================================================================================================\n"
-        "UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC UV SYNC\n"
-        "===============================================================================================================\n"
-    ) from e
-
+from ._lib_check import _check_dependencies
 from .agent import Agent
 from .buffer import ReplayBuffer
+
+_check_dependencies()
+
+__all__ = ["Agent", "ReplayBuffer"]
