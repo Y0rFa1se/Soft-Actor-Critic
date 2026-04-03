@@ -52,8 +52,6 @@ def losses(agent, buffer_samples, gamma):
 
     a, log_prob = agent._sample_action(s)
     policy_loss = _policy_loss(agent.q_network, agent.log_alpha, s, a, log_prob)
-    log_alpha_loss = _log_alpha_loss(
-        agent.log_alpha, a, log_prob, agent.target_entropy
-    )
+    log_alpha_loss = _log_alpha_loss(agent.log_alpha, a, log_prob, agent.target_entropy)
 
     return q_loss, policy_loss, log_alpha_loss
