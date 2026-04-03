@@ -5,7 +5,7 @@ trainer:
   devices: 1
   max_steps: 1000000
   val_check_interval: 0
-  log_every_n_steps: 0
+  log_every_n_steps: 1
 
 agent:
   state_dim: 8
