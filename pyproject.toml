@@ -1,0 +1,10 @@
+[project]
+name = "soft-actor-critic"
+version = "1.0.0"
+description = "Skeleton code"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.4.4",
+    "torch>=2.11.0",
+]
