@@ -10,3 +10,7 @@ end_of_line = lf
 
 [*.py]
 quote_type = double
+
+[*.yaml]
+indent_style = space
+indent_size = 2

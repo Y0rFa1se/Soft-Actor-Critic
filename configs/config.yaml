@@ -1,0 +1,27 @@
+env_id: "InvertedPendulum-v5"
+
+trainer:
+  accelerator: "auto"
+  devices: 1
+  max_steps: 1000000
+  log_every_n_steps: 10
+
+agent:
+  state_dim: 4
+  action_dim: 1
+  q_lr: 5e-5
+  policy_lr: 5e-5
+  log_alpha_lr: 5e-5
+  gamma: 0.95
+  tau: 0.01
+  target_entropy: -3.0
+
+buffer:
+  max_size: 1000000
+
+train:
+  batch_size: 256
+  seed: 42
+
+wandb:
+  project: "SAC-InvertedPendulum"
