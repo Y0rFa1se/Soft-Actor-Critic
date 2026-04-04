@@ -8,7 +8,7 @@ from SAC import Agent
 @hydra.main(config_path="configs", config_name="config", version_base="1.3")
 def main(cfg: DictConfig):
     env = gym.make(cfg.env_id, render_mode="human")
-    checkpoint = "ll_cont_solved_params.ckpt"
+    checkpoint = "parameters/ll_cont_solved_params.ckpt"
     agent = Agent.load_from_checkpoint(checkpoint, weights_only=False)
     agent.eval()
 
