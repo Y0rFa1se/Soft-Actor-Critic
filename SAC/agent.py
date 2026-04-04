@@ -39,9 +39,8 @@ class Agent(L.LightningModule):
 
         return a, log_prob
 
-    def training_step(self, batch, batch_idx):
+    def training_step(self, buffer_samples, batch_idx):
         q_opt, policy_opt, log_alpha_opt = self.optimizers()
-        buffer_samples = batch
 
         q_loss = loss_q(self, buffer_samples)
         q_opt.zero_grad()
