@@ -37,19 +37,26 @@ uv run test.py
 
 $$
 J_Q(w_i) = \mathbb{E}_{(s, a, r, s') \sim \mathcal{D}}[\frac{1}{2}(Q_{w_i}(s, a) - \hat{Q}(s, a))^2]
-\\
+$$
+$$
 \text{where } \hat{Q}(s, a) := r + \gamma(\min\limits_{j = 1, 2} Q_{\bar{w}_j}(s', a') - \alpha\log\pi_\theta(a'|s')),
-\\
+$$
+$$
 (a', \log\pi_\theta(a'|s')) \sim \pi_\theta.
-\\
+$$
+$$
 J_\pi(\theta) = \mathbb{E}_{s \sim \mathcal{D}}[\alpha\log\pi_\theta(a|s) - \min\limits_{j = 1, 2}Q_{w_j}(s, a)]
-\\
+$$
+$$
 \text{with } a \sim \pi_\theta.
-\\
+$$
+$$
 \text{Let } \zeta := \log\alpha.
-\\
+$$
+$$
 J(\zeta) = \mathbb{E}_{s \sim \mathcal{D}}[-\zeta(\log\pi_\theta(a|s) + \bar{\mathcal{H}})]
-\\
+$$
+$$
 \text{with } a \sim \pi_\theta.
 $$
 
@@ -57,9 +64,11 @@ $$
 
 $$
 \nabla_{w_i} J_Q(w_i) = \mathbb{E}_{(s, a, r, s') \sim \mathcal{D}} \left[ \left( Q_{w_i}(s, a) - \hat{Q}(s, a) \right) \nabla_{w_i} Q_{w_i}(s, a) \right]
-\\
+$$
+$$
 \nabla_\theta J_\pi(\theta) = \mathbb{E}_{s \sim \mathcal{D}, a \sim \pi_\theta} \left[ \nabla_\theta \log \pi_\theta(a|s) \left( \alpha \log \pi_\theta(a|s) - \min_{j=1,2} Q_{w_j}(s, a) \right) + \nabla_\theta (\alpha \log \pi_\theta(a|s)) \right]
-\\
+$$
+$$
 \nabla_\zeta J(\zeta) = \mathbb{E}_{s \sim \mathcal{D}, a \sim \pi_\theta} \left[ - (\log \pi_\theta(a|s) + \bar{\mathcal{H}}) \right]
 $$
 
@@ -90,12 +99,16 @@ $$
 
 $$
 w_i := w_i - \lambda_Q\nabla_{w_i}J_{Q}(w_i)
-\\
+$$
+$$
 \theta := \theta - \lambda_\theta\nabla_\theta J_\pi(\theta)
-\\
+$$
+$$
 \zeta := \zeta - \lambda_\zeta\nabla_\zeta J_\zeta(\zeta)
-\\
+$$
+$$
 \alpha := \exp(\zeta)
-\\
+$$
+$$
 \bar{w_i} := \tau w_i + (1 - \tau)\bar{w_i}
 $$
