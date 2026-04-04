@@ -1,10 +1,10 @@
 # Soft-Actor-Critic
 
-### [🇰🇷 한국어](/README.md) | [🇺🇸 English](/docs/README_en.md)
+**This was AI-translated, so it might not be accurate.**
 
-[SAC with automatic temperature adjustment](https://arxiv.org/pdf/1812.05905) 버전 구현 코드입니다.
+This is the implementation code for the [SAC with automatic temperature adjustment](https://arxiv.org/pdf/1812.05905) version.
 
-가장 표준적인 Twin-Q model을 이용하고 있습니다. (두 Q중 작은것을 Actor로 사용)
+It utilizes the standard Twin-Q model (using the minimum of two Q-values for the Actor).
 
 ---
 
@@ -14,22 +14,22 @@
 - [Soft Actor-Critic Algorithms and Applications](https://arxiv.org/abs/1812.05905)
 
 > [!NOTE]
-> skeleton부터 직접 구현하려면 [이거](https://github.com/Y0rFa1se/Soft-Actor-Critic/tree/skeleton)
+> If you want to implement directly from the skeleton, see [this link](https://github.com/Y0rFa1se/Soft-Actor-Critic/tree/dev).
 
 
-## 실행방법
+## How to Run
 
-### 학습 코드 실행
+### Execute Training Code
 ```bash
 uv run main.py
 ```
 
-### 테스트 코드 실행
+### Execute Test Code
 ```bash
 uv run test.py
 ```
 
-현재 continuous lunar lander를 학습해 solve([200점 이상](https://gymnasium.farama.org/environments/box2d/lunar_lander/#rewards))한parameter를 같이 두었으니 확인해 볼 수 있다.
+Parameters that have solved the continuous lunar lander ([200 points or more](https://gymnasium.farama.org/environments/box2d/lunar_lander/#rewards)) are included for verification.
 
 ![sample_gif](/imgs/lunarlander_sample.gif)
 
@@ -44,7 +44,7 @@ $$
 \text{where } \hat{Q}(s, a) := r + \gamma(\min\limits_{j = 1, 2} Q_{\bar{w}_j}(s', a') - \alpha\log\pi_\theta(a'|s')),
 $$
 $$
-\text{with }(a', \log\pi_\theta(a'|s')) \sim \pi_\theta.
+\text{with } (a', \log\pi_\theta(a'|s')) \sim \pi_\theta.
 $$
 $$
 J_\pi(\theta) = \mathbb{E}_{s \sim \mathcal{D}}[\alpha\log\pi_\theta(a|s) - \min\limits_{j = 1, 2}Q_{w_j}(s, a)]
@@ -75,23 +75,23 @@ $$
 $$
 
 > [!Important]
-> pytorch의 auto grad를 사용할 것이기 때문에 tractable함만 알고 있으면 된다.
-> 또한 alpha 값을 항상 양수로 유지하기 위해 실제로는 $\zeta$를 학습하고 $\alpha = e^\zeta$로 구해 사용한다.
+> Since we use PyTorch's auto-grad, we only need to ensure the functions are tractable.
+> Additionally, to keep the alpha value always positive, we actually train $\zeta$ and use $\alpha = \exp(\zeta)$ in practice.
 
-다만 문제가 될만한 부분은 $\pi_\theta$에서 $(a, \log\pi_\theta)$를 샘플링 하는 부분인데,
-이는 randomness에 의해 gradient chain이 끊어지지 않도록 reparametrization trick을 사용한다.
+One part that could be problematic is sampling $(a,\log\pi_\theta​)$ from $\pi_\theta$​.
+To prevent the gradient chain from breaking due to randomness, the reparameterization trick is used.
 
-실제 코드 구현에서는 policy network를 state만들 받아서 $\mu, \log\sigma$를 출력하도록 설정해 두었다. 즉 state에서의 action의 분포가 normal을 따른다고 가정하였다.
+In the actual code implementation, the policy network is set to receive the state and output $\mu,\log\sigma$. That is, the action distribution at a given state is assumed to follow a Normal distribution.
 
-이후 reparametrization trick을 이용해 $z = \mu + \sigma\epsilon$ 으로 샘플링하고 $\tanh(z)$로 $(-1,1)$의 값으로 바꾸어 action으로 사용한다.
+Then, using the reparameterization trick, we sample $z = \mu + \sigma\epsilon$ and transform it into an action in the range $(−1,1)$ using $\tanh(z)$.
 
 > [!note]
-> $\sigma$가 아닌 $\log\sigma$로 설정한 이유는 $\sigma$ 값은 음수가 될 수 없고 분포에 큰 영향을 주기 때문이다.
-> 이후 사용시에는 $\sigma = \exp(\log\sigma)$를 계산하여 사용한다.
+> The reason for setting it as $\log\sigma$ instead of $\sigma$ is that the $\sigma$ value cannot be negative and significantly influences the distribution.
+> During use, it is calculated as $\sigma = \exp(\log\sigma)$.
 
 > [!caution]
-> $\tanh$를 거쳐 action을 뽑기 때문에 확률밀도의 Jacobian 보정이 필요하다.
-> 수식은 아래와 같다.
+> Since the action is pulled through $\tanh$, a Jacobian correction of the probability density is required.
+> The formula is as follows:
 
 $$
 \log \pi_\theta(a|s) = \log \mu(z|s) - \sum_{i=1}^{D} \log (1 - \tanh^2(z_i))
