@@ -2,7 +2,7 @@ env_id: "LunarLanderContinuous-v3"
 
 trainer:
   accelerator: "auto"
-  devices: 1
+  devices: 4
   max_steps: 1000000
   val_check_interval: 0
   log_every_n_steps: 1
