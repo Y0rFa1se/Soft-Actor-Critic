@@ -42,7 +42,7 @@ class DataModule(L.LightningDataModule):
         return DataLoader(Dataset(self.buffer, self.batch_size), batch_size=None)
 
     def step(self, agent):
-        action = agent.forward(self.state)
+        action = agent(self.state)
         next_state, reward, terminated, truncated, _ = self.env.step(action)
 
         self.buffer.add(self.state, action, reward, next_state, terminated or truncated)
