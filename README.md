@@ -12,7 +12,7 @@
 - [Soft Actor-Critic Algorithms and Applications](https://arxiv.org/abs/1812.05905)
 
 > [!NOTE]
-> skeleton부터 직접 구현하려면 [이거](https://github.com/Y0rFa1se/Soft-Actor-Critic/tree/dev)
+> skeleton부터 직접 구현하려면 [이거](https://github.com/Y0rFa1se/Soft-Actor-Critic/tree/skeleton)
 
 
 ## 실행방법
