@@ -93,6 +93,10 @@ Then, using the reparameterization trick, we sample $z = \mu + \sigma\epsilon$ a
 > Since the action is pulled through $\tanh$, a Jacobian correction of the probability density is required.
 > The formula is as follows:
 
+> [!note]
+> Update: Implemented an act function to use $\tanh(\mu)$ directly without sampling.
+> Stochastic noise is not required in the test environment.
+
 $$
 \log \pi_\theta(a|s) = \log \mu(z|s) - \sum_{i=1}^{D} \log (1 - \tanh^2(z_i))
 $$

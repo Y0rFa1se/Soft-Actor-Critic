@@ -108,7 +108,7 @@ $$
 > 수식은 아래와 같다.
 
 > [!note]
-> 수정내역) policy network에서 $\mu, \log\sigma$ 를 뽑아 샘플링 하지 않고 $\mu$ 를 그대로 $\tanh$ 함수를 거쳐 사용하는 act 함수 추가.
+> Update: policy network에서 $\mu, \log\sigma$ 를 뽑아 샘플링 하지 않고 $\mu$ 를 그대로 $\tanh$ 함수를 거쳐 사용하는 act 함수 추가.
 > 테스트 환경에서는 노이즈를 추가한 액션을 뽑을 필요가 없기 때문
 
 $$
