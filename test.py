@@ -18,7 +18,7 @@ def main(cfg: DictConfig):
         total_reward = 0
         done = False
         while not done:
-            action = agent(state)
+            action = agent.act(state)
             next_state, reward, done, truncated, info = env.step(action)
             state = next_state
             total_reward += reward

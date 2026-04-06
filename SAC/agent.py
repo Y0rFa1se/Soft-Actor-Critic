@@ -83,17 +83,29 @@ class Agent(L.LightningModule):
         ):
             target_param.data.lerp_(param.data, self.config.tau)
 
-    def forward(self, state):
-        if isinstance(state, np.ndarray):
-            state = torch.from_numpy(state).float().to(self.device)
+    def _np_to_tensor(self, x):
+        if isinstance(x, np.ndarray):
+            return torch.from_numpy(x).float().to(self.device)
 
-        if state.ndim == 1:
-            state = state.unsqueeze(0)
+        if x.ndim == 1:
+            x = x.unsqueeze(0)
+        return x
+
+    def forward(self, state):
+        state = self._np_to_tensor(state)
 
         with torch.no_grad():
             action, _ = self._sample_action(state)
 
         return action.squeeze(0).cpu().numpy()
+
+    def act(self, state):
+        state = self._np_to_tensor(state)
+
+        mu, log_std = self.policy_network(state)
+        action = torch.tanh(mu)
+
+        return action.squeeze(0).detach().cpu().numpy()
 
     def on_train_batch_end(self, outputs, batch, batch_idx):
         reward = self.trainer.datamodule.step(self)
