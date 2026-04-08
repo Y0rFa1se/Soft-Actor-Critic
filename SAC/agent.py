@@ -7,14 +7,20 @@ from .objectives import loss_log_alpha, loss_policy, loss_q
 
 
 class Agent(L.LightningModule):
-    def __init__(self, config):
+    def __init__(self, config, MODE):
         super().__init__()
         self.save_hyperparameters(config)
         self.config = config
 
-        self.q_network = TwinQNetwork(config.state_dim, config.action_dim)
-        self.policy_network = PolicyNetwork(config.state_dim, config.action_dim)
-        self.target_q_network = TwinQNetwork(config.state_dim, config.action_dim)
+        self.q_network = TwinQNetwork(
+            config.state_dim, config.action_dim, config.q_hidden_dim
+        )
+        self.policy_network = PolicyNetwork(
+            config.state_dim, config.action_dim, config.policy_hidden_dim
+        )
+        self.target_q_network = TwinQNetwork(
+            config.state_dim, config.action_dim, config.q_hidden_dim
+        )
         self.target_q_network.load_state_dict(self.q_network.state_dict())
 
         self.target_entropy = (
@@ -24,14 +30,21 @@ class Agent(L.LightningModule):
         )
         self.log_alpha = torch.nn.Parameter(torch.tensor(0.0))
 
+        self.test_mode = False if MODE == "test" else True
         self.automatic_optimization = False
 
-    def _sample_action(self, s):
+    def set_test(self, test_mode=True):
+        self.test_mode = test_mode
+
+    def _sample_action(self, s, deterministic=False):
         mu, log_std = self.policy_network(s)
         std = log_std.exp()
         normal_dist = torch.distributions.Normal(mu, std)
 
-        z = normal_dist.rsample()
+        if deterministic:
+            z = mu
+        else:
+            z = normal_dist.rsample()
         a = torch.tanh(z)
 
         log_prob = normal_dist.log_prob(z) - torch.log(1 - a.pow(2) + 1e-6)
@@ -95,17 +108,9 @@ class Agent(L.LightningModule):
         state = self._np_to_tensor(state)
 
         with torch.no_grad():
-            action, _ = self._sample_action(state)
+            action, _ = self._sample_action(state, deterministic=self.test_mode)
 
         return action.squeeze(0).cpu().numpy()
-
-    def act(self, state):
-        state = self._np_to_tensor(state)
-
-        mu, log_std = self.policy_network(state)
-        action = torch.tanh(mu)
-
-        return action.squeeze(0).detach().cpu().numpy()
 
     def on_train_batch_end(self, outputs, batch, batch_idx):
         reward = self.trainer.datamodule.step(self)

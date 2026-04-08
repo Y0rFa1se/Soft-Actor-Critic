@@ -3,14 +3,14 @@ import torch.nn as nn
 
 
 class _QNetwork(nn.Module):
-    def __init__(self, state_dim, action_dim):
+    def __init__(self, state_dim, action_dim, hidden_dim=256):
         super(_QNetwork, self).__init__()
         self.network = nn.Sequential(
-            nn.Linear(state_dim + action_dim, 256),
+            nn.Linear(state_dim + action_dim, hidden_dim),
             nn.ReLU(),
-            nn.Linear(256, 256),
+            nn.Linear(hidden_dim, hidden_dim),
             nn.ReLU(),
-            nn.Linear(256, 1),
+            nn.Linear(hidden_dim, 1),
         )
 
     def forward(self, s, a):
@@ -18,26 +18,26 @@ class _QNetwork(nn.Module):
 
 
 class TwinQNetwork(nn.Module):
-    def __init__(self, state_dim, action_dim):
+    def __init__(self, state_dim, action_dim, hidden_dim=256):
         super(TwinQNetwork, self).__init__()
-        self.q1 = _QNetwork(state_dim, action_dim)
-        self.q2 = _QNetwork(state_dim, action_dim)
+        self.q1 = _QNetwork(state_dim, action_dim, hidden_dim)
+        self.q2 = _QNetwork(state_dim, action_dim, hidden_dim)
 
     def forward(self, s, a):
         return self.q1(s, a), self.q2(s, a)
 
 
 class PolicyNetwork(nn.Module):
-    def __init__(self, state_dim, action_dim):
+    def __init__(self, state_dim, action_dim, hidden_dim=256):
         super(PolicyNetwork, self).__init__()
         self.fc = nn.Sequential(
-            nn.Linear(state_dim, 256),
+            nn.Linear(state_dim, hidden_dim),
             nn.ReLU(),
-            nn.Linear(256, 256),
+            nn.Linear(hidden_dim, hidden_dim),
             nn.ReLU(),
         )
-        self.mu = nn.Linear(256, action_dim)
-        self.log_std = nn.Linear(256, action_dim)
+        self.mu = nn.Linear(hidden_dim, action_dim)
+        self.log_std = nn.Linear(hidden_dim, action_dim)
 
     def forward(self, s):
         x = self.fc(s)

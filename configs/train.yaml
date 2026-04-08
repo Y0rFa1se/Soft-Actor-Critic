@@ -10,6 +10,8 @@ trainer:
 agent:
   state_dim: 8
   action_dim: 2
+  q_hidden_dim: 256
+  policy_hidden_dim: 256
   q_lr: 3e-4
   policy_lr: 3e-4
   log_alpha_lr: 3e-4
@@ -20,10 +22,16 @@ agent:
 buffer:
   max_size: 1000000
 
-train:
+runner:
   batch_size: 256
-  # seed: 100
-  start_steps: 10000
+  seed: null
+  warmup_steps: 10000
+
+  agent_checkpoint: null
+  buffer_save: null
+  buffer_load: null
+
+  gif_save: null
 
 wandb:
   project: "SAC-LLCont"
