@@ -30,7 +30,7 @@ def _buffer(cfg):
 
 
 def _datamodule(cfg, buffer):
-    dm = DataModule(cfg.env_id, buffer, cfg.runner.batch_size, cfg.runner.warmup_steps)
+    dm = DataModule(cfg.env_id, buffer, cfg.runner.batch_size, cfg.runner.warmup_steps, cfg.get("env_module",None),)
 
     return dm
 
