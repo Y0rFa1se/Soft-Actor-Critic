@@ -11,7 +11,7 @@ MODE = "train"
 @hydra.main(config_path="configs", config_name=MODE, version_base="1.3")
 def main(cfg: DictConfig):
     if MODE == "train":
-        agent, buffer, dm, trainer = train(cfg)
+        agent, buffer, dm, trainer = train(cfg, MODE)
     elif MODE == "test":
         test(cfg)
 
