@@ -1,6 +1,7 @@
 import gymnasium as gym
 import pytorch_lightning as L
 from torch.utils.data import DataLoader, IterableDataset
+import importlib
 
 
 class Dataset(IterableDataset):
@@ -19,8 +20,12 @@ class Dataset(IterableDataset):
 
 
 class DataModule(L.LightningDataModule):
-    def __init__(self, env_id, buffer, batch_size, warmup_steps=1000):
+    def __init__(self, env_id, buffer, batch_size, warmup_steps=1000, env_module=None):
         super().__init__()
+
+        if env_module:
+                importlib.import_module(env_module)
+                
         self.env = gym.make(env_id)
         self.buffer = buffer
         self.batch_size = batch_size
